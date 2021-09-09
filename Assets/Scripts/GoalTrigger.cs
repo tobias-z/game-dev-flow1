@@ -1,3 +1,4 @@
+using Domain.Player;
 using UnityEngine;
 using Random = System.Random;
 
@@ -31,6 +32,7 @@ public class GoalTrigger : MonoBehaviour
 
     private static void ShowMessage(Component other)
     {
+        if (!other.name.Equals(Player.Name)) return;
         var mesh = other.gameObject.AddComponent<TextMesh>();
         mesh.fontSize = 20;
         mesh.offsetZ = 10f;

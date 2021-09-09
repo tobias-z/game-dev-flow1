@@ -21,7 +21,7 @@ namespace Domain.Enemy
 
         public bool IsFinished()
         {
-            return _navMeshAgent.remainingDistance < 0.1f;
+            return _navMeshAgent.remainingDistance < 0.1f || _navMeshAgent.isStopped;
         }
     }
 }
