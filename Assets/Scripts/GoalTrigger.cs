@@ -1,26 +1,36 @@
-using System.Collections.Generic;
 using UnityEngine;
 using Random = System.Random;
 
 public class GoalTrigger : MonoBehaviour
 {
-    public List<Transform> teleports;
+    private GameObject[] _teleports;
+    private GameObject _obstacle;
+
+    private void Awake()
+    {
+        _obstacle = GameObject.Find("Obsacle");
+        _teleports = GameObject.FindGameObjectsWithTag("teleport");
+    }
 
     private void OnTriggerEnter(Collider other)
     {
-        var number = new Random().Next(teleports.Count);
-        var teleport = teleports[number];
+        var number = new Random().Next(_teleports.Length);
+        var teleport = _teleports[number];
         var vector = new Vector3(-4f, 0, -4f);
-        other.transform.position = teleport.position - vector;
+        other.transform.position = teleport.transform.position - vector;
     }
 
     private void OnTriggerExit(Collider other)
     {
-        var obstacle = GameObject.Find("Obsacle");
-        Instantiate(obstacle, other.transform.position + Vector3.forward, Quaternion.identity);
-        
-        if (Utils.HasComponent<TextMesh>(other.gameObject)) return;
-        
+        Instantiate(_obstacle, other.transform.position + Vector3.forward, Quaternion.identity);
+
+        if (other.gameObject.HasComponent<TextMesh>()) return;
+
+        ShowMessage(other);
+    }
+
+    private static void ShowMessage(Component other)
+    {
         var mesh = other.gameObject.AddComponent<TextMesh>();
         mesh.fontSize = 20;
         mesh.offsetZ = 10f;
