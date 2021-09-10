@@ -1,50 +1,45 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEditorInternal.VersionControl;
 using UnityEngine;
 
 public class TriggerScript : MonoBehaviour
 {
-    
+
     public float detectObjectRadius = 15f;
 
-    private List<GameObject> triggerObjects;
+
+    private Dictionary<Renderer, Vector3> _trees;
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("Trigger" + other.tag);
-        Renderer triggerObject = other.GetComponent<Renderer>();
-        if (other.tag == "Tree")
-        {
-            triggerObject.material.color = Color.red;
-            triggerObjects.Add(other.gameObject);
-        }
-        
+        if (!other.CompareTag("Tree")) return;
+        var curRenderer = other.GetComponent<Renderer>();
+        var vector3 = curRenderer.transform.localScale;
+
+        if (_trees.ContainsKey(curRenderer)) return;
+
+        _trees.Add(curRenderer, vector3);
+
+        curRenderer.transform.localScale = new Vector3(0, 0, 0);
+
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        triggerObjects = new List<GameObject>();
+        _trees = new Dictionary<Renderer, Vector3>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (triggerObjects.Count > 0)
+        if (_trees.Count <= 0) return;
+        foreach (var triggerObject in _trees.Where(triggerObject => Vector3.Distance(triggerObject.Key.transform.position, transform.position) >= detectObjectRadius))
         {
-            foreach (var triggerObject in triggerObjects)
-            {
-                if (Vector3.Distance(triggerObject.transform.position, transform.position) >= detectObjectRadius)
-                {
-                    Renderer renderer = triggerObject.GetComponent<Renderer>();
-                    renderer.material.color = Color.black;
-                    Debug.Log("Color change" + triggerObject.tag);
-                    triggerObjects.Remove(triggerObject);
-                    Debug.Log("Removed" + triggerObject.tag);
-                }
-            }
+            triggerObject.Key.transform.localScale = triggerObject.Value;
         }
 
     }
