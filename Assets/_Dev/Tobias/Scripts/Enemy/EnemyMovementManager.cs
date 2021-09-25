@@ -1,25 +1,20 @@
-using System;
 using Codergram._Dev.Tobias.Scripts.Factories;
 using UnityEngine;
 using UnityEngine.AI;
 
-namespace Codergram._Dev.Tobias.Scripts
+namespace Codergram._Dev.Tobias.Scripts.Enemy
 {
     public class EnemyMovementManager : MonoBehaviour
     {
-        [SerializeField] private Transform player;
-        [SerializeField] private float attackDistance = 30f;
-        
         public NavMeshAgent NavMeshAgent { get; private set; }
         public Animator Animator { get; private set; }
-        public float AttackDistance => attackDistance;
-        
+        public Enemy Enemy { get; private set; }
+
         private EnemyMovementFactory _enemyMovementFactory;
-        
-        public float PlayerDistance() => Vector3.Distance(player.position, transform.position);
-        
+
         private void Awake()
         {
+            Enemy = GetComponent<Enemy>();
             NavMeshAgent = GetComponent<NavMeshAgent>();
             Animator = GetComponent<Animator>();
             _enemyMovementFactory = new EnemyMovementFactory(this);
@@ -28,15 +23,15 @@ namespace Codergram._Dev.Tobias.Scripts
         private void Update()
         {
             AttackPlayer();
-            _enemyMovementFactory.Create().Move();
+            _enemyMovementFactory.Create()?.Move();
         }
         
         private void AttackPlayer()
         {
-            var shouldAttackPlayer = PlayerDistance() < AttackDistance;
+            var shouldAttackPlayer = Enemy.GetPlayerDistance() < Enemy.AttackDistance;
             if (shouldAttackPlayer)
             {
-                NavMeshAgent.SetDestination(player.position);
+                NavMeshAgent.SetDestination(Enemy.Player.position);
             }
         }
     }

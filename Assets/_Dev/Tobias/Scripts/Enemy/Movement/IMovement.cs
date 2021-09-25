@@ -1,4 +1,4 @@
-namespace Codergram._Dev.Tobias.Scripts.Movement
+namespace Codergram._Dev.Tobias.Scripts.Enemy.Movement
 {
     public interface IMovement
     {

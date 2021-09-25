@@ -1,5 +1,6 @@
 using System;
-using Codergram._Dev.Tobias.Scripts.Movement;
+using Codergram._Dev.Tobias.Scripts.Enemy;
+using Codergram._Dev.Tobias.Scripts.Enemy.Movement;
 
 namespace Codergram._Dev.Tobias.Scripts.Factories
 {
@@ -14,7 +15,7 @@ namespace Codergram._Dev.Tobias.Scripts.Factories
         
         public IMovement Create()
         {
-            var playerDistance = _manager.PlayerDistance();
+            var playerDistance = _manager.Enemy.GetPlayerDistance();
             if (ShouldRun())
                 return new RifleRunMovement(_manager);
             if (playerDistance < 15)
@@ -25,8 +26,8 @@ namespace Codergram._Dev.Tobias.Scripts.Factories
 
         private bool ShouldRun()
         {
-            var playerDistance = _manager.PlayerDistance();
-            var isMoving = _manager.PlayerDistance() < _manager.AttackDistance;
+            var playerDistance = _manager.Enemy.GetPlayerDistance();
+            var isMoving = playerDistance < _manager.Enemy.AttackDistance;
             return playerDistance > 15 && isMoving;
         }
     }

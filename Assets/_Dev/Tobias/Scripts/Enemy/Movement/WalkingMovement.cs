@@ -1,8 +1,6 @@
-using Codergram._Dev.Tobias.Scripts.Factories;
-using TMPro;
 using UnityEngine;
 
-namespace Codergram._Dev.Tobias.Scripts.Movement
+namespace Codergram._Dev.Tobias.Scripts.Enemy.Movement
 {
     public class WalkingMovement : IMovement
     {
