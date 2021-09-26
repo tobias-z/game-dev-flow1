@@ -9,56 +9,33 @@ namespace Codergram._Dev.Tobias.Scripts.Enemy
     public class EnemySpawner : MonoBehaviour
     {
         [SerializeField] private Enemy enemy;
-        
-        [Header("Settings")]
-        [SerializeField] private List<GameObject> spawnPositions;
 
-        [Header("Settings")]
-        [SerializeField] private float respawnTime = 2f;
-        
+        [Header("Settings")] [SerializeField] private List<GameObject> spawnPositions;
+        [Header("Settings")] [SerializeField] private float respawnTime = 2f;
+        public List<Enemy> Enemies { get; } = new List<Enemy>();
+        public List<GameObject> SpawnPositions => spawnPositions;
+        public float RespawnTime => respawnTime;
 
-        private readonly List<Enemy> _enemies = new List<Enemy>();
+        private IPositionUpdater _updater;
 
         private void Awake()
         {
             SpawnEnemies();
+            _updater = new PositionUpdater(this);
         }
-
-        private void Update()
-        {
-            UpdateEnemyPositions();
-        }
-
+        
         private void SpawnEnemies()
         {
             foreach (var spawnPosition in spawnPositions)
             {
-                _enemies.Add(Instantiate(enemy, spawnPosition.transform.position, Quaternion.identity));
-            }
-        }
-        
-        private void UpdateEnemyPositions()
-        {
-            foreach (var theEnemy in _enemies.Where(theEnemy => theEnemy.GetPlayerDistance() < theEnemy.GetPlayerScale()))
-            {
-                DeactivateEnemy(theEnemy);
-                MoveEnemyToNewPosition(theEnemy);
-                StartCoroutine(ActivateEnemy(theEnemy));
+                Enemies.Add(Instantiate(enemy, spawnPosition.transform.position, Quaternion.identity));
             }
         }
 
-        private void MoveEnemyToNewPosition(Enemy theEnemy)
+        private void Update()
         {
-            var idx = Random.Range(0, spawnPositions.Count);
-            theEnemy.transform.position = spawnPositions[idx].transform.position;
+            _updater.UpdatePosition();
         }
 
-        private IEnumerator ActivateEnemy(Enemy theEnemy)
-        {
-            yield return new WaitForSeconds(respawnTime);
-            theEnemy.gameObject.SetActive(true);
-        }
-
-        private static void DeactivateEnemy(Enemy theEnemy) => theEnemy.gameObject.SetActive(false);
     }
 }
