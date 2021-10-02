@@ -4,7 +4,7 @@ using Codergram._Dev.Tobias.Scripts.Enemy.Movement;
 
 namespace Codergram._Dev.Tobias.Scripts.Factories
 {
-    public class EnemyMovementFactory
+    public class EnemyMovementFactory : IFactory<IMovement>
     {
         private readonly EnemyMovementManager _manager;
         

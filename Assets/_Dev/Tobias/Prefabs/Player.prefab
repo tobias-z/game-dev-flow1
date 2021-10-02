@@ -95,6 +95,7 @@ GameObject:
   - component: {fileID: 3244254061741485096}
   - component: {fileID: 3244254061741485097}
   - component: {fileID: 3244254061741485094}
+  - component: {fileID: 15544367682248826}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -136,7 +137,6 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -181,3 +181,16 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
+--- !u!114 &15544367682248826
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3244254061741485095}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2de9dd7de78a45da9dad5c7f90a8df64, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damage: 20
