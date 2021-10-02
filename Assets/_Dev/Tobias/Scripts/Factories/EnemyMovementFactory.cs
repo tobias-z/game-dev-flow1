@@ -16,7 +16,7 @@ namespace Codergram._Dev.Tobias.Scripts.Factories
         public IMovement Create()
         {
             var playerDistance = _manager.Enemy.GetPlayerDistance();
-            if (ShouldRun())
+            if (ShouldRun(playerDistance))
                 return new RifleRunMovement(_manager);
             if (playerDistance < 15)
                 return new WalkingMovement(_manager);
@@ -24,9 +24,8 @@ namespace Codergram._Dev.Tobias.Scripts.Factories
             return null;
         }
 
-        private bool ShouldRun()
+        private bool ShouldRun(float playerDistance)
         {
-            var playerDistance = _manager.Enemy.GetPlayerDistance();
             var isMoving = playerDistance < _manager.Enemy.AttackDistance;
             return playerDistance > 15 && isMoving;
         }
